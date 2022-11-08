@@ -1,16 +1,37 @@
 import React from "react";
 
-const SET_STORIES_ACTION = 'SET_STORIES';
-const REMOVE_STORY_ACTION = 'REMOVE_STORY';
+const STORIES_FETCH_INIT = 'STORIES_FETCH_INIT';
+const STORIES_FETCH_SUCCESS = 'STORIES_FETCH_SUCCESS';
+const STORIES_FETCH_FAILURE = 'STORIES_FETCH_FAILURE';
+const REMOVE_STORY = 'REMOVE_STORY';
 
 const storiesReducer = (state, action) => {
   switch (action.type) {
-    case SET_STORIES_ACTION:
-      return action.payload;
-    case REMOVE_STORY_ACTION:
-      return state.filter(
-        (story) => action.payload.objectID !== story.objectID
-      );
+    case STORIES_FETCH_INIT:
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+      };
+    case STORIES_FETCH_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload,
+      };
+    case STORIES_FETCH_FAILURE:
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+      };
+    case REMOVE_STORY:
+      return {
+        ...state,
+        data: state.filter(
+          (story) => action.payload.objectID !== story.objectID),
+      };
     default:
       throw new Error();
   }
@@ -23,7 +44,7 @@ const initialStories = [
     author: 'Jordan Walke',
     num_comments: 3,
     points: 4,
-    objectID: 0,
+    objectID: 1,
   },
   {
     title: 'Redux',
@@ -31,15 +52,16 @@ const initialStories = [
     author: 'Dan Abramov, Andrew Clark',
     num_comments: 2,
     points: 5,
-    objectID: 1,
+    objectID: 2,
   }
 ];
 
 const getAsyncStories = () =>
-  new Promise((resolve) => setTimeout(
-    () => resolve({ data: { stories: initialStories } }),
-    200
-  ));
+  // new Promise((reject, resolve) => setTimeout(reject, 2000));
+new Promise((resolve) => setTimeout(
+  () => resolve({ data: { stories: initialStories } }),
+  200
+));
 
 const useSemipersistentState = (key, initialState) => {
   const [value, setValue] = React.useState(localStorage.getItem('search') || initialState);
@@ -54,27 +76,31 @@ const useSemipersistentState = (key, initialState) => {
 const App = () => {
 
   const [searchTerm, setSearchTerm] = useSemipersistentState('search', 'React');
-  const [stories, dispatchStories] = React.useReducer(storiesReducer, []);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isError, setIsError] = React.useState(false);
+  const [stories, dispatchStories] = React.useReducer(storiesReducer, {
+    data: [],
+    isLoading: false,
+    isError: false,
+  });
 
   React.useEffect(() => {
-    setIsLoading(true);
-    getAsyncStories()
-      .then(result => {
-        dispatchStories({
-          type: SET_STORIES_ACTION,
-          payload: result.data.stories,
-        });
+    dispatchStories({ type: STORIES_FETCH_INIT });
 
-        setIsLoading(false);
-      })
-      .catch(() => setIsError(true));
+    getAsyncStories()
+      .then(result =>
+        dispatchStories({
+          type: STORIES_FETCH_SUCCESS,
+          payload: result.data.stories,
+        })
+      )
+      .catch(() =>
+        dispatchStories({
+          type: STORIES_FETCH_FAILURE,
+        }));
   }, []);
 
   const handleRemoveStory = (item) => {
     dispatchStories({
-      type: REMOVE_STORY_ACTION,
+      type: REMOVE_STORY,
       payload: item,
     });
   };
@@ -83,7 +109,7 @@ const App = () => {
     setSearchTerm(event.target.value);
   }
 
-  const searchedStories = stories.filter(story =>
+  const searchedStories = stories.data.filter(story =>
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -99,13 +125,13 @@ const App = () => {
 
       <hr />
 
-      {isError && <p>Something went wrong...</p>}
+      {stories.isError && <p>Something went wrong...</p>}
 
-      {isLoading ? (
-          <p> Is loading...</p>
-        ) : (
-          <List list={searchedStories} onRemoveItem={handleRemoveStory} />
-        )}
+      {stories.isLoading ? (
+        <p> Is loading...</p>
+      ) : (
+        <List list={searchedStories} onRemoveItem={handleRemoveStory} />
+      )}
 
     </div>
   );
@@ -114,13 +140,13 @@ const App = () => {
 const List = ({ list, onRemoveItem }) => (
   <ul>
     {list.map(item =>
-      <Item item={item} onRemoveItem={onRemoveItem} />
+      <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />
     )}
   </ul>
 );
 
 const Item = ({ item, onRemoveItem }) => (
-  <li key={item.objectID}>
+  <li>
     <span>
       <a href={item.url}>{item.title}</a>
     </span>
