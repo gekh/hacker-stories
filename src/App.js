@@ -7,12 +7,14 @@ const REMOVE_STORY = 'REMOVE_STORY';
 
 const storiesReducer = (state, action) => {
   switch (action.type) {
+
     case STORIES_FETCH_INIT:
       return {
         ...state,
         isLoading: true,
         isError: false,
       };
+
     case STORIES_FETCH_SUCCESS:
       return {
         ...state,
@@ -20,18 +22,21 @@ const storiesReducer = (state, action) => {
         isError: false,
         data: action.payload,
       };
+
     case STORIES_FETCH_FAILURE:
       return {
         ...state,
         isLoading: true,
         isError: false,
       };
+
     case REMOVE_STORY:
       return {
         ...state,
         data: state.data.filter(
           (story) => action.payload.objectID !== story.objectID),
       };
+
     default:
       throw new Error();
   }
@@ -52,6 +57,9 @@ const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 const App = () => {
 
   const [searchTerm, setSearchTerm] = useSemipersistentState('search', 'React');
+
+  const [url, setUrl] = React.useState(`${API_ENDPOINT}${searchTerm}`);
+
   const [stories, dispatchStories] = React.useReducer(storiesReducer, {
     data: [],
     isLoading: false,
@@ -65,7 +73,7 @@ const App = () => {
 
     dispatchStories({ type: STORIES_FETCH_INIT });
 
-    fetch(`${API_ENDPOINT}${searchTerm}`)
+    fetch(url)
       .then(response => response.json())
       .then(result =>
         dispatchStories({
@@ -77,7 +85,7 @@ const App = () => {
         dispatchStories({
           type: STORIES_FETCH_FAILURE,
         }));
-  }, [searchTerm]);
+  }, [url]);
 
   React.useEffect(() => {
     handleFetchStories();
@@ -90,17 +98,33 @@ const App = () => {
     });
   };
 
-  const handleChange = event => {
+  const handleSearchInput = (event) => {
     setSearchTerm(event.target.value);
-  }
+  };
+
+  const handleSearchSubmit = () =>
+    setUrl(`${API_ENDPOINT}${searchTerm}`);
 
   return (
     <div>
       <h1>My Hacker Stories</h1>
 
-      <InputWithLabel id="search" onChange={handleChange} value={searchTerm} isFocused>
+      <InputWithLabel
+        id="search"
+        value={searchTerm}
+        isFocused
+        onInputChange={handleSearchInput}
+      >
         Search:
       </InputWithLabel>
+
+      <button
+        type="button"
+        disabled={!searchTerm}
+        onClick={handleSearchSubmit}
+      >
+        Submit
+      </button>
 
       you're searching for: {searchTerm}
 
@@ -146,7 +170,7 @@ const Item = ({ item, onRemoveItem }) => (
   </li>
 );
 
-const InputWithLabel = ({ id, type = 'text', value, onChange, isFocused, children }) => {
+const InputWithLabel = ({ id, type = 'text', value, onInputChange, isFocused, children }) => {
 
   const inputRef = React.useRef();
 
@@ -160,7 +184,7 @@ const InputWithLabel = ({ id, type = 'text', value, onChange, isFocused, childre
     <>
       <label htmlFor={id}>{children}</label>
       &nbsp;
-      <input id={id} type={type} value={value} onChange={onChange} ref={inputRef} />
+      <input id={id} type={type} value={value} onChange={onInputChange} ref={inputRef} />
     </>
   );
 }
