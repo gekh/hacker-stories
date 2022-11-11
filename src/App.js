@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import axios from 'axios';
 
 const STORIES_FETCH_INIT = 'STORIES_FETCH_INIT';
 const STORIES_FETCH_SUCCESS = 'STORIES_FETCH_SUCCESS';
@@ -73,12 +74,12 @@ const App = () => {
 
     dispatchStories({ type: STORIES_FETCH_INIT });
 
-    fetch(url)
-      .then(response => response.json())
+    axios
+      .get(url)
       .then(result =>
         dispatchStories({
           type: STORIES_FETCH_SUCCESS,
-          payload: result.hits,
+          payload: result.data.hits,
         })
       )
       .catch(() =>
@@ -125,8 +126,6 @@ const App = () => {
       >
         Submit
       </button>
-
-      you're searching for: {searchTerm}
 
       <hr />
 
