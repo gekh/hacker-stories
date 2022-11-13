@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import './App.css';
 
 const STORIES_FETCH_INIT = 'STORIES_FETCH_INIT';
 const STORIES_FETCH_SUCCESS = 'STORIES_FETCH_SUCCESS';
@@ -111,16 +112,14 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h1>My Hacker Stories</h1>
+    <div className='container'>
+      <h1 className='headline-primary'>My Hacker Stories</h1>
 
       <SearchForm
         handleSearchSubmit={handleSearchSubmit}
         handleSearchInput={handleSearchInput}
         searchTerm={searchTerm}
       ></SearchForm>
-
-      <hr />
 
       {stories.isError && <p>Something went wrong...</p>}
 
@@ -143,19 +142,19 @@ const List = ({ list, onRemoveItem }) => (
 );
 
 const Item = ({ item, onRemoveItem }) => (
-  <li>
-    <span>
+  <li className='item'>
+    <span style={{ width: '40%' }}>
       <a href={item.url}>{item.title}</a>
     </span>
-    {' '}—{' '}
-    <span>{item.author}</span>
-    {' '}—{' '}
-    <span>{item.num_comments}</span>
-    {' '}—{' '}
-    <span>{item.points}</span>
-    {' '}—{' '}
-    <span>
-      <button type="button" onClick={onRemoveItem.bind(null, item)}>
+    <span style={{ width: '30%' }}>{item.author}</span>
+    <span style={{ width: '10%' }}>{item.num_comments}</span>
+    <span style={{ width: '10%' }}>{item.points}</span>
+    <span style={{ width: '10%' }}>
+      <button
+        type="button"
+        onClick={onRemoveItem.bind(null, item)}
+        className='button button_small'
+      >
         Dismiss
       </button>
     </span>
@@ -174,16 +173,23 @@ const InputWithLabel = ({ id, type = 'text', value, onInputChange, isFocused, ch
 
   return (
     <>
-      <label htmlFor={id}>{children}</label>
+      <label htmlFor={id} className='label'>{children}</label>
       &nbsp;
-      <input id={id} type={type} value={value} onChange={onInputChange} ref={inputRef} />
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={onInputChange}
+        ref={inputRef}
+        className='input'
+      />
     </>
   );
 }
 
 const SearchForm = ({ handleSearchSubmit, handleSearchInput, searchTerm }) => {
   return (
-    <form onSubmit={handleSearchSubmit}>
+    <form onSubmit={handleSearchSubmit} className='search-form'>
       <InputWithLabel
         id="search"
         value={searchTerm}
@@ -196,6 +202,7 @@ const SearchForm = ({ handleSearchSubmit, handleSearchInput, searchTerm }) => {
       <button
         type="submit"
         disabled={!searchTerm}
+        className='button button_large'
       >
         Submit
       </button>
