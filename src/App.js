@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import {ReactComponent as Check} from './check.svg';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 const STORIES_FETCH_INIT = 'STORIES_FETCH_INIT';
@@ -84,10 +85,6 @@ const App = () => {
   });
 
   const handleFetchStories = React.useCallback(async () => {
-    if (searchTerm === '') {
-      return;
-    }
-
     dispatchStories({ type: STORIES_FETCH_INIT });
 
     try {
@@ -187,6 +184,8 @@ const StyledButton = styled.button`
   &:hover {
     background: #171212;
     color: #ffffff;
+    fill: #ffffff;
+    stroke: #ffffff;
   }
 `;
 
@@ -211,7 +210,7 @@ const Item = ({ item, onRemoveItem }) => (
         type="button"
         onClick={onRemoveItem.bind(null, item)}
       >
-        Dismiss
+        <Check height='18px' width='18px' />
       </StyledButtonSmall>
     </StyledColumn>
   </StyledItem>
