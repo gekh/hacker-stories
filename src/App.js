@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import {ReactComponent as Check} from './check.svg';
+import { ReactComponent as Check } from './check.svg';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 const STORIES_FETCH_INIT = 'STORIES_FETCH_INIT';
@@ -72,6 +72,14 @@ const StyledHeadlinePrimary = styled.h1`
   letter-spacing: 2px;
 `;
 
+const getSumComments = (stories) => {
+  return stories.data.reduce(
+    (result, value) => result + value.num_comments,
+    0
+  );
+
+};
+
 const App = () => {
 
   const [searchTerm, setSearchTerm] = useSemipersistentState('search', 'React');
@@ -113,19 +121,21 @@ const App = () => {
     });
   }, []);
 
-  const handleSearchInput = (event) => {
+  const handleSearchInput = React.useCallback((event) => {
     setSearchTerm(event.target.value);
-  };
+  }, []);
 
-  const handleSearchSubmit = (event) => {
+  const handleSearchSubmit = React.useCallback((event) => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
 
     event.preventDefault();
-  }
+  }, [searchTerm]);
+
+  const sumComments = React.useMemo(() => getSumComments(stories), [stories]);
 
   return (
     <StyledContainer>
-      <StyledHeadlinePrimary>My Hacker Stories</StyledHeadlinePrimary>
+      <StyledHeadlinePrimary>My Hacker Stories with {sumComments} comments</StyledHeadlinePrimary>
 
       <SearchForm
         handleSearchSubmit={handleSearchSubmit}
@@ -144,7 +154,7 @@ const App = () => {
   );
 };
 
-const List = React.memo( ({ list, onRemoveItem }) => (
+const List = React.memo(({ list, onRemoveItem }) => (
   <ul>
     {list.map(item =>
       <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />
@@ -263,26 +273,25 @@ const StyledSearchForm = styled.form`
   align-items: baseline;
 `;
 
-const SearchForm = ({ handleSearchSubmit, handleSearchInput, searchTerm }) => {
-  return (
-    <StyledSearchForm onSubmit={handleSearchSubmit}>
-      <InputWithLabel
-        id="search"
-        value={searchTerm}
-        isFocused
-        onInputChange={handleSearchInput}
-      >
-        Search:
-      </InputWithLabel>
+const SearchForm = React.memo(({ handleSearchSubmit, handleSearchInput, searchTerm }) => console.log('SearchForm') || (
+  <StyledSearchForm onSubmit={handleSearchSubmit}>
+    <InputWithLabel
+      id="search"
+      value={searchTerm}
+      isFocused
+      onInputChange={handleSearchInput}
+    >
+      Search:
+    </InputWithLabel>
 
-      <StyledButtonLarge
-        type="submit"
-        disabled={!searchTerm}
-      >
-        Submit
-      </StyledButtonLarge>
-    </StyledSearchForm>
-  );
-}
+    <StyledButtonLarge
+      type="submit"
+      disabled={!searchTerm}
+    >
+      Submit
+    </StyledButtonLarge>
+  </StyledSearchForm>
+));
+
 
 export default App;
