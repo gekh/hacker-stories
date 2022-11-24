@@ -95,8 +95,8 @@ const storiesReducer = (state: StoriesState, action: StoriesAction) => {
     case STORIES_FETCH_FAILURE:
       return {
         ...state,
-        isLoading: true,
-        isError: false,
+        isLoading: false,
+        isError: true,
       };
 
     case REMOVE_STORY:
@@ -143,7 +143,7 @@ const StyledHeadlinePrimary = styled.h1`
   letter-spacing: 2px;
 `;
 
-const getSumComments = (stories: { data: Story[] }) =>
+const getSumComments = (stories: { data: Story[]; }) =>
   stories.data.reduce(
     (result: number, value: Story) => result + value.num_comments,
     0
@@ -381,3 +381,4 @@ const SearchForm = React.memo(
 SearchForm.displayName = 'SearchForm';
 
 export default App;
+export { storiesReducer, SearchForm, InputWithLabel, List, Item };
