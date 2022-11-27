@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import App, { storiesReducer, SearchForm, InputWithLabel, List, Item } from './App';
 import '@testing-library/jest-dom';
+import { debug } from 'console';
 
 const storyOne = {
   title: 'React',
@@ -82,8 +83,7 @@ describe('storiesReducer', () => {
 
 describe('Item', () => {
   it('renders all properties', () => {
-    render(<Item item={storyOne} onRemoveItem={() => true} />);
-
+    render(<Item item={storyOne} onRemoveItem={jest.fn()} />);
     expect(screen.getByText('Jordan Walke')).toBeInTheDocument();
     expect(screen.getByText('React')).toHaveAttribute(
       'href',
@@ -92,8 +92,109 @@ describe('Item', () => {
   });
 
   it('renders a clickable dismiss button', () => {
-    render(<Item item={storyOne} onRemoveItem={() => true} />);
-
+    render(<Item item={storyOne} onRemoveItem={jest.fn()} />);
     expect(screen.getByRole('button')).toBeInTheDocument();
+  });
+
+  test('clicking the dismiss button calls the callback handler', () => {
+    const handleRemoveItem = jest.fn();
+    render(<Item item={storyOne} onRemoveItem={handleRemoveItem} />);
+    fireEvent.click(screen.getByRole('button'));
+    expect(handleRemoveItem).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('SearchForm', () => {
+  const searchFormProps = {
+    searchTerm: 'React',
+    onSearchInput: jest.fn(),
+    onSearchSubmit: jest.fn(),
+  };
+
+  it('renders the input field with its value', () => {
+    render(<SearchForm {...searchFormProps} />);
+    expect(screen.getByDisplayValue('React')).toBeInTheDocument();
+  });
+
+  it('renders the correct label', () => {
+    render(<SearchForm {...searchFormProps} />);
+    expect(screen.getByLabelText(/Search/)).toBeInTheDocument();
+  });
+
+  it('calls onSearchInput on input field change', () => {
+    render(<SearchForm {...searchFormProps} />);
+    fireEvent.change(screen.getByDisplayValue('React'), {
+      target: { value: 'Re' },
+    });
+    fireEvent.change(screen.getByDisplayValue('React'), {
+      target: { value: 'Red' },
+    });
+    fireEvent.change(screen.getByDisplayValue('React'), {
+      target: { value: 'Redu' },
+    });
+    fireEvent.change(screen.getByDisplayValue('React'), {
+      target: { value: 'Redux' },
+    });
+    expect(searchFormProps.onSearchInput).toHaveBeenCalledTimes(4);
+  });
+
+  it('calls onSearchSubmit', () => {
+    render(<SearchForm {...searchFormProps} />);
+    fireEvent.click(screen.getByRole('button'));
+    expect(searchFormProps.onSearchSubmit).toBeCalledTimes(1);
+  });
+
+});
+
+describe('InputWithLabel', () => {
+  it('renders input field with label', () => {
+    const handleInputChange = jest.fn();
+    render(<InputWithLabel
+      id="search"
+      value="React"
+      onInputChange={handleInputChange}
+    >
+      Search:
+    </InputWithLabel>);
+
+    expect(screen.getByDisplayValue('React')).toBeInTheDocument();
+    expect(screen.getByLabelText(/Search/)).toBeInTheDocument();
+  });
+
+  it('renders input field with label', () => {
+    const handleInputChange = jest.fn();
+    render(<InputWithLabel
+      id="search"
+      value="React"
+      onInputChange={handleInputChange}
+    >
+      Search:
+    </InputWithLabel>);
+
+    fireEvent.change(screen.getByDisplayValue('React'), {
+      target: { value: 'Redux' }
+    });
+
+    expect(handleInputChange).toBeCalledTimes(1);
+  });
+});
+
+
+describe('List', () => {
+  it('should display the list of 2 items', () => {
+    render(<List list={stories} onRemoveItem={jest.fn()} />);
+    expect(screen.getByText('Jordan Walke')).toBeInTheDocument();
+    expect(screen.getByText('Dan Abramov, Andrew Clark')).toBeInTheDocument();
+    expect(screen.getAllByRole('listitem')).toHaveLength(2);
+    screen.getAllByRole('listitem').forEach(el => {
+      expect(el).toBeInTheDocument();
+    });
+  });
+
+  test('clicking the dismiss button calls the callback handler', () => {
+    const handleRemoveItem = jest.fn();
+    render(<List list={stories} onRemoveItem={handleRemoveItem} />);
+    fireEvent.click(screen.getAllByRole('button')[0]);
+    expect(handleRemoveItem).toHaveBeenCalledTimes(1);
   });
 });
