@@ -1,7 +1,6 @@
-// import { render, screen } from '@testing-library/react';
-// import * as axios from "axios";
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import App, { storiesReducer, SearchForm, InputWithLabel, List, Item } from './App';
-
+import '@testing-library/jest-dom';
 
 const storyOne = {
   title: 'React',
@@ -22,6 +21,7 @@ const storyTwo = {
 };
 
 const stories = [storyOne, storyTwo];
+
 
 describe('storiesReducer', () => {
 
@@ -80,29 +80,20 @@ describe('storiesReducer', () => {
 
 });
 
-describe('App component', () => {
-  test('removes an item when clicking the Dismiss button', () => {
+describe('Item', () => {
+  it('renders all properties', () => {
+    render(<Item item={storyOne} onRemoveItem={() => true} />);
 
+    expect(screen.getByText('Jordan Walke')).toBeInTheDocument();
+    expect(screen.getByText('React')).toHaveAttribute(
+      'href',
+      'https://reactjs.org/'
+    );
   });
 
-  test('requests some initial stories from an API', () => {
+  it('renders a clickable dismiss button', () => {
+    render(<Item item={storyOne} onRemoveItem={() => true} />);
 
-  });
-});
-
-
-describe('something truthy and falsy', () => {
-  test('true to be true', () => {
-    expect(true).toBeTruthy;
-  });
-
-  test('false to be false', () => {
-    expect(false).toBeFalsy;
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 });
-
-// test('renders learn react link', () => {
-//   render(<App />);
-//   const linkElement = screen.getByText(/learn react/i);
-//   expect(linkElement).toBeInTheDocument();
-// });
