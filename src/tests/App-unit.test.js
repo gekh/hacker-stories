@@ -1,27 +1,7 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import App, { storiesReducer, SearchForm, InputWithLabel, List, Item } from './App';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { storiesReducer, SearchForm, InputWithLabel, List, Item } from '../App';
 import '@testing-library/jest-dom';
-import { debug } from 'console';
-
-const storyOne = {
-  title: 'React',
-  url: 'https://reactjs.org/',
-  author: 'Jordan Walke',
-  num_comments: 3,
-  points: 4,
-  objectID: 0,
-};
-
-const storyTwo = {
-  title: 'Redux',
-  url: 'https://redux.js.org/',
-  author: 'Dan Abramov, Andrew Clark',
-  num_comments: 2,
-  points: 5,
-  objectID: 1,
-};
-
-const stories = [storyOne, storyTwo];
+import { storyOne, storyTwo, stories } from './fixtures/stories.fixture';
 
 
 describe('storiesReducer', () => {
@@ -108,7 +88,8 @@ describe('SearchForm', () => {
   const searchFormProps = {
     searchTerm: 'React',
     onSearchInput: jest.fn(),
-    onSearchSubmit: jest.fn(),
+    onSearchSubmit: jest.fn().mockImplementation(e => e.preventDefault()),
+
   };
 
   it('renders the input field with its value', () => {

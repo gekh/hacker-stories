@@ -299,7 +299,7 @@ const Item = ({ item, onRemoveItem }: ItemProps) => (
     <StyledColumn width="10%">{item.points}</StyledColumn>
     <StyledColumn width="10%">
       <StyledButtonSmall type="button" onClick={onRemoveItem.bind(null, item)}>
-        V
+        Dismiss
       </StyledButtonSmall>
     </StyledColumn>
   </StyledItem>
