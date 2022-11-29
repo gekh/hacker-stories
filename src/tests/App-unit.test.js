@@ -89,7 +89,6 @@ describe('SearchForm', () => {
     searchTerm: 'React',
     onSearchInput: jest.fn(),
     onSearchSubmit: jest.fn().mockImplementation(e => e.preventDefault()),
-
   };
 
   it('renders the input field with its value', () => {

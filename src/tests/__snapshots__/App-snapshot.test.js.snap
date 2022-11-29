@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputWithLabel renders a snapshot 1`] = `
+<label
+  class="sc-iBYQkv dmSATp"
+  for="search"
+>
+  Search:
+</label>
+`;
+
+exports[`Item renders a snapshot 1`] = `
+<li
+  class="sc-dkrFOg bTWlcS"
+>
+  <span
+    class="sc-hLBbgP cqbfSs"
+    width="40%"
+  >
+    <a
+      href="https://reactjs.org/"
+    >
+      React
+    </a>
+  </span>
+  <span
+    class="sc-hLBbgP cqbSZz"
+    width="30%"
+  >
+    Jordan Walke
+  </span>
+  <span
+    class="sc-hLBbgP cqbtYF"
+    width="10%"
+  >
+    3
+  </span>
+  <span
+    class="sc-hLBbgP cqbtYF"
+    width="10%"
+  >
+    4
+  </span>
+  <span
+    class="sc-hLBbgP cqbtYF"
+    width="10%"
+  >
+    <button
+      class="sc-eDvSVe sc-jSUZER jeFzlQ dEKhgm"
+      type="button"
+    >
+      Dismiss
+    </button>
+  </span>
+</li>
+`;
+
+exports[`SearchForm renders a snapshot 1`] = `
+<form
+  class="sc-pyfCe jNZiVM"
+>
+  <label
+    class="sc-iBYQkv dmSATp"
+    for="search"
+  >
+    <strong>
+      Search:
+    </strong>
+  </label>
+   
+  <input
+    class="sc-ftTHYK gVUtwk"
+    id="search"
+    type="text"
+    value="React"
+  />
+  <button
+    class="sc-eDvSVe sc-gKPRtg jeFzlQ eGWFJW"
+    type="submit"
+  >
+    Submit
+  </button>
+</form>
+`;

@@ -368,7 +368,7 @@ const SearchForm = React.memo(
         isFocused
         onInputChange={onSearchInput}
       >
-        Search:
+        <strong>Search:</strong>
       </InputWithLabel>
 
       <StyledButtonLarge type="submit" disabled={!searchTerm}>
