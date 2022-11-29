@@ -6,6 +6,7 @@ import { SearchForm } from './SearchForm';
 import { StoriesAction } from './stories-acton.type';
 import { Stories, Story } from './stories.type';
 
+
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 const STORIES_FETCH_INIT = 'STORIES_FETCH_INIT';
 const STORIES_FETCH_SUCCESS = 'STORIES_FETCH_SUCCESS';

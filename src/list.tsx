@@ -1,7 +1,8 @@
-import React, { ChangeEvent, ReactNode } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { StyledButtonSmall } from './button.styled';
 import { Stories, Story } from './stories.type';
+
 
 type ItemProps = {
   item: Story;

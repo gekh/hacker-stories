@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { StyledButtonLarge } from './button.styled';
 import { InputWithLabel } from './InputWithLabel';
 
+
 type SearchFormProps = {
   searchTerm: string;
   onSearchInput: (event: ChangeEvent<HTMLInputElement>) => void;

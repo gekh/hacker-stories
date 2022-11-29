@@ -1,5 +1,6 @@
 import { Stories, Story } from "./stories.type";
 
+
 type StoriesFetchInitAction = {
   type: 'STORIES_FETCH_INIT';
 };
