@@ -1,20 +1,9 @@
-import React, { ChangeEvent, FormEvent } from 'react';
-import styled from 'styled-components';
-import { StyledButtonLarge } from './button.styled';
-import { InputWithLabel } from './InputWithLabel';
+import React from 'react';
+import { StyledButtonLarge } from '../../styles/button.styled';
+import { InputWithLabel } from '../InputWithLabel';
+import { StyledSearchForm } from './styles';
+import { SearchFormProps } from './types';
 
-
-type SearchFormProps = {
-  searchTerm: string;
-  onSearchInput: (event: ChangeEvent<HTMLInputElement>) => void;
-  onSearchSubmit: (event: FormEvent<HTMLFormElement>) => void;
-};
-
-const StyledSearchForm = styled.form`
-  padding: 10px 0 20px 0;
-  display: flex;
-  align-items: baseline;
-`;
 
 const SearchForm = React.memo(
   ({ onSearchSubmit, onSearchInput, searchTerm }: SearchFormProps) => (

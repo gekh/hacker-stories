@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { InputWithLabel, Item, List, SearchForm, storiesReducer } from '../App';
+import { InputWithLabel, Item, List, SearchForm, storiesReducer } from '../components/App';
 import { stories, storyOne, storyTwo } from './fixtures/stories.fixture';
 
 

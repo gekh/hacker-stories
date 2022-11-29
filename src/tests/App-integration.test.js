@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import axios from 'axios';
-import App from '../App';
+import App from '../components/App';
 import { stories } from './fixtures/stories.fixture';
 
 

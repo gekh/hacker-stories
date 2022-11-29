@@ -1,18 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-import { StyledButtonSmall } from './button.styled';
-import { Stories, Story } from './stories.type';
+import { StyledButtonSmall } from '../../styles/button.styled';
+import { StyledColumn, StyledItem } from './styles';
+import { ItemProps, ListProps } from './types';
 
-
-type ItemProps = {
-  item: Story;
-  onRemoveItem: (item: Story) => void;
-};
-
-type ListProps = {
-  list: Stories;
-  onRemoveItem: (item: Story) => void;
-};
 
 const List = React.memo(({ list, onRemoveItem }: ListProps) => (
   <ul>
@@ -23,29 +13,6 @@ const List = React.memo(({ list, onRemoveItem }: ListProps) => (
 ));
 
 List.displayName = 'List';
-
-const StyledItem = styled.li`
-  display: flex;
-  align-items: center;
-  padding-bottom: 5px;
-`;
-
-interface StyledColumnProps {
-  width: string;
-};
-
-const StyledColumn = styled.span<StyledColumnProps>`
-  padding: 0 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  a {
-    color: inherit;
-  }
-
-  width: ${(props) => props.width};
-`;
 
 const Item = ({ item, onRemoveItem }: ItemProps) => (
   <StyledItem>
