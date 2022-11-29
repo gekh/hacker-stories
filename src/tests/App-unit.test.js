@@ -1,7 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { storiesReducer, SearchForm, InputWithLabel, List, Item } from '../App';
 import '@testing-library/jest-dom';
-import { storyOne, storyTwo, stories } from './fixtures/stories.fixture';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { InputWithLabel, Item, List, SearchForm, storiesReducer } from '../App';
+import { stories, storyOne, storyTwo } from './fixtures/stories.fixture';
 
 
 describe('storiesReducer', () => {

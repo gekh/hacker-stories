@@ -1,8 +1,8 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import axios from 'axios';
-import App, { storiesReducer, SearchForm, InputWithLabel, List, Item } from '../App';
-import { storyOne, storyTwo, stories } from './fixtures/stories.fixture';
 import '@testing-library/jest-dom';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import axios from 'axios';
+import App from '../App';
+import { stories } from './fixtures/stories.fixture';
 
 
 jest.mock('axios');
