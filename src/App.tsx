@@ -1,6 +1,10 @@
-import React, { ChangeEvent, FormEvent, ReactNode } from 'react';
 import axios from 'axios';
+import React, { ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
+import { List } from './list';
+import { SearchForm } from './SearchForm';
+import { StoriesAction } from './stories-acton.type';
+import { Stories, Story } from './stories.type';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 const STORIES_FETCH_INIT = 'STORIES_FETCH_INIT';
@@ -8,70 +12,10 @@ const STORIES_FETCH_SUCCESS = 'STORIES_FETCH_SUCCESS';
 const STORIES_FETCH_FAILURE = 'STORIES_FETCH_FAILURE';
 const REMOVE_STORY = 'REMOVE_STORY';
 
-type Story = {
-  objectID: string;
-  url: string;
-  title: string;
-  author: string;
-  num_comments: number;
-  points: number;
-};
-
-type Stories = Story[];
-
-type ItemProps = {
-  item: Story;
-  onRemoveItem: (item: Story) => void;
-};
-
-type ListProps = {
-  list: Stories;
-  onRemoveItem: (item: Story) => void;
-};
-
 type StoriesState = {
   data: Stories;
   isLoading: boolean;
   isError: boolean;
-};
-
-type StoriesFetchInitAction = {
-  type: 'STORIES_FETCH_INIT';
-};
-
-type StoriesFetchSuccessAction = {
-  type: 'STORIES_FETCH_SUCCESS';
-  payload: Stories;
-};
-
-type StoriesFetchFailurAction = {
-  type: 'STORIES_FETCH_FAILURE';
-};
-
-type StoriesRemoveAction = {
-  type: 'REMOVE_STORY';
-  payload: Story;
-};
-
-type StoriesAction =
-  | StoriesFetchInitAction
-  | StoriesFetchSuccessAction
-  | StoriesFetchFailurAction
-  | StoriesRemoveAction;
-
-type SearchFormProps = {
-  searchTerm: string;
-  onSearchInput: (event: ChangeEvent<HTMLInputElement>) => void;
-  onSearchSubmit: (event: FormEvent<HTMLFormElement>) => void;
-};
-
-type InputWithLabelProps = {
-  id: string;
-  value: string;
-  type?: string;
-  onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  isFocused?: boolean;
-  children: ReactNode;
 };
 
 const storiesReducer = (state: StoriesState, action: StoriesAction) => {
@@ -231,153 +175,5 @@ const App = () => {
   );
 };
 
-const List = React.memo(({ list, onRemoveItem }: ListProps) => (
-  <ul>
-    {list.map((item) => (
-      <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />
-    ))}
-  </ul>
-));
-
-List.displayName = 'List';
-
-const StyledItem = styled.li`
-  display: flex;
-  align-items: center;
-  padding-bottom: 5px;
-`;
-
-interface Props {
-  width: string;
-};
-
-const StyledColumn = styled.span<Props>`
-  padding: 0 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  a {
-    color: inherit;
-  }
-
-  width: ${(props) => props.width};
-`;
-
-const StyledButton = styled.button`
-  background: transparent;
-  border: 1px solid #171212;
-  padding: 5px;
-  cursor: pointer;
-  margin: 0 5px;
-
-  transition: all 0.1s ease-in;
-
-  &:hover {
-    background: #171212;
-    color: #ffffff;
-    fill: #ffffff;
-    stroke: #ffffff;
-  }
-`;
-
-const StyledButtonSmall = styled(StyledButton)`
-  padding: 5px;
-`;
-
-const StyledButtonLarge = styled(StyledButton)`
-  padding: 10px;
-`;
-
-const Item = ({ item, onRemoveItem }: ItemProps) => (
-  <StyledItem>
-    <StyledColumn width="40%">
-      <a href={item.url}>{item.title}</a>
-    </StyledColumn>
-    <StyledColumn width="30%">{item.author}</StyledColumn>
-    <StyledColumn width="10%">{item.num_comments}</StyledColumn>
-    <StyledColumn width="10%">{item.points}</StyledColumn>
-    <StyledColumn width="10%">
-      <StyledButtonSmall type="button" onClick={onRemoveItem.bind(null, item)}>
-        Dismiss
-      </StyledButtonSmall>
-    </StyledColumn>
-  </StyledItem>
-);
-
-const StyledLabel = styled.label`
-  border-top: 1px solid #171212;
-  border-left: 1px solid #171212;
-  padding-left: 5px;
-  font-size: 24px;
-`;
-
-const StyledInput = styled.input`
-  border: none;
-  border-bottom: 1px solid #171212;
-  background-color: transparent;
-
-  margin: 0 5px;
-
-  font-size: 24px;
-`;
-
-const InputWithLabel = ({
-  id,
-  type = 'text',
-  value,
-  onInputChange,
-  isFocused,
-  children,
-}: InputWithLabelProps) => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  React.useEffect(() => {
-    if (isFocused && inputRef.current !== null) {
-      inputRef.current.focus();
-    }
-  }, [isFocused]);
-
-  return (
-    <>
-      <StyledLabel htmlFor={id}>{children}</StyledLabel>
-      &nbsp;
-      <StyledInput
-        id={id}
-        type={type}
-        value={value}
-        onChange={onInputChange}
-        ref={inputRef}
-      />
-    </>
-  );
-};
-
-const StyledSearchForm = styled.form`
-  padding: 10px 0 20px 0;
-  display: flex;
-  align-items: baseline;
-`;
-
-const SearchForm = React.memo(
-  ({ onSearchSubmit, onSearchInput, searchTerm }: SearchFormProps) => (
-    <StyledSearchForm onSubmit={onSearchSubmit}>
-      <InputWithLabel
-        id="search"
-        value={searchTerm}
-        isFocused
-        onInputChange={onSearchInput}
-      >
-        <strong>Search:</strong>
-      </InputWithLabel>
-
-      <StyledButtonLarge type="submit" disabled={!searchTerm}>
-        Submit
-      </StyledButtonLarge>
-    </StyledSearchForm>
-  )
-);
-SearchForm.displayName = 'SearchForm';
-
 export default App;
-export { storiesReducer, SearchForm, InputWithLabel, List, Item };
+export { storiesReducer };
