@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Item renders a snapshot 1`] = `
+<li
+  class="sc-hLBbgP eDqXDW"
+>
+  <span
+    class="sc-eDvSVe feTYso"
+    width="40%"
+  >
+    <a
+      href="https://reactjs.org/"
+    >
+      React
+    </a>
+  </span>
+  <span
+    class="sc-eDvSVe feSJiH"
+    width="30%"
+  >
+    Jordan Walke
+  </span>
+  <span
+    class="sc-eDvSVe feSkhN"
+    width="10%"
+  >
+    3
+  </span>
+  <span
+    class="sc-eDvSVe feSkhN"
+    width="10%"
+  >
+    4
+  </span>
+  <span
+    class="sc-eDvSVe feSkhN"
+    width="10%"
+  >
+    <button
+      class="sc-bcXHqe sc-gswNZR cctTZy hmpeyq"
+      type="button"
+    >
+      Dismiss
+    </button>
+  </span>
+</li>
+`;
+
+exports[`List renders a snapshot 1`] = `
+<ul>
+  <li
+    class="sc-hLBbgP eDqXDW"
+  >
+    <span
+      class="sc-eDvSVe feTYso"
+      width="40%"
+    >
+      <a
+        href="https://reactjs.org/"
+      >
+        React
+      </a>
+    </span>
+    <span
+      class="sc-eDvSVe feSJiH"
+      width="30%"
+    >
+      Jordan Walke
+    </span>
+    <span
+      class="sc-eDvSVe feSkhN"
+      width="10%"
+    >
+      3
+    </span>
+    <span
+      class="sc-eDvSVe feSkhN"
+      width="10%"
+    >
+      4
+    </span>
+    <span
+      class="sc-eDvSVe feSkhN"
+      width="10%"
+    >
+      <button
+        class="sc-bcXHqe sc-gswNZR cctTZy hmpeyq"
+        type="button"
+      >
+        Dismiss
+      </button>
+    </span>
+  </li>
+  <li
+    class="sc-hLBbgP eDqXDW"
+  >
+    <span
+      class="sc-eDvSVe feTYso"
+      width="40%"
+    >
+      <a
+        href="https://redux.js.org/"
+      >
+        Redux
+      </a>
+    </span>
+    <span
+      class="sc-eDvSVe feSJiH"
+      width="30%"
+    >
+      Dan Abramov, Andrew Clark
+    </span>
+    <span
+      class="sc-eDvSVe feSkhN"
+      width="10%"
+    >
+      2
+    </span>
+    <span
+      class="sc-eDvSVe feSkhN"
+      width="10%"
+    >
+      5
+    </span>
+    <span
+      class="sc-eDvSVe feSkhN"
+      width="10%"
+    >
+      <button
+        class="sc-bcXHqe sc-gswNZR cctTZy hmpeyq"
+        type="button"
+      >
+        Dismiss
+      </button>
+    </span>
+  </li>
+</ul>
+`;
